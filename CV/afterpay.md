@@ -8,9 +8,9 @@ Highest Degree: Master in Computer Science, Zhejiang University
 
 Work Experience: Works Applications (2015 - Present)
 
-Mobile: 15657635423
+Mobile:
 
-Email: congma@outlook.com
+Email:
 :::
 
 ::: right
