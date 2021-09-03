@@ -2,7 +2,7 @@
 # Ma Cong - Frontend engineer
 
 ::: left
-Weekly blogs: https://www.jianshu.com/u/1dd527d00038
+Weekly blogs: https://tinyurl.com/yffrrn4j
 
 Highest Degree: Master in Computer Science, Zhejiang University
 
