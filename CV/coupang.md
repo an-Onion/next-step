@@ -8,7 +8,7 @@ Educational background: Master in Computer Science, Zhejiang University
 
 Working Experience: Works Applications (2015 - Present)
 
-Mobile: 15657635423
+Mobile:
 
 Email: congma@outlook.com
 :::
