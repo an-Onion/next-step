@@ -1,6 +1,7 @@
 {
   "scripts": {
     "lru": "ts-node src/lru/LRUCache.ts",
+    "promise": "tsimp ./src/MyPromise.ts",
     "lint:ts": "eslint . --ext .ts"
   },
   "devDependencies": {
