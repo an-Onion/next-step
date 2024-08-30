@@ -1,15 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "module": "commonjs",
-    "target": "es2019",
-    "experimentalDecorators": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "rootDir": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true
+    "inlineSources": true,
+    "jsx": "react",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": false,
+    "sourceMap": false,
+    "strict": true,
+    "target": "es2022",
+    "lib": ["es2022", "dom"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "tsimp": {
+    "compilerOptions": {
+      "skipLibCheck": true,
+      "strict": false
+    }
+  }
 }
