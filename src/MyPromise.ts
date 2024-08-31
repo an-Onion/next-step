@@ -9,8 +9,8 @@ class MyPromise {
   #status: Status;
   #value: unknown;
   #reason: string | undefined;
-  #fulfilledCb: Array<ResolveFunc> = [];
-  #rejectedCb: Array<RejectFunc | undefined> = [];
+  #fulfilledQueue: Array<ResolveFunc> = [];
+  #rejectedQueue: Array<RejectFunc | undefined> = [];
   constructor(executor: Executor) {
     this.#status = "Pending";
 
@@ -20,15 +20,15 @@ class MyPromise {
       this.#value = value;
       this.#status = "Fulfilled";
 
-      this.#fulfilledCb.forEach((cb) => cb?.(value));
+      this.#fulfilledQueue.forEach((cb) => cb?.(value));
     };
 
     const reject: RejectFunc = (reason) => {
       if (this.#status !== "Pending") return;
 
       this.#reason = reason;
-      this.#status = 'Rejected';
-      this.#rejectedCb.forEach((cb) => cb?.(reason));
+      this.#status = "Rejected";
+      this.#rejectedQueue.forEach((cb) => cb?.(reason));
       return this.#reason;
     };
 
@@ -40,17 +40,22 @@ class MyPromise {
   }
 
   then(onFulfilled: ResolveFunc, onRejected?: RejectFunc) {
-
-    console.log("In Then");
+    console.log("In Then", this.#status);
 
     const executor: Executor = (resolve, reject) => {
-
       const nextFulfilled = (value: unknown) => {
-        const success = onFulfilled(value);
-        return resolve(success);
+        queueMicrotask(() => {
+          const success = onFulfilled(value);
+
+          if (success instanceof MyPromise) {
+            return success.then(resolve, reject);
+          }
+
+          return resolve(success);
+        });
       };
 
-      if( this.#status === 'Fulfilled' ){
+      if (this.#status === "Fulfilled") {
         nextFulfilled(this.#value);
       }
 
@@ -58,37 +63,41 @@ class MyPromise {
         const fail = onRejected?.(reason) ?? reason;
         return reject?.(fail);
       };
-  
-      if( this.#status === 'Rejected'){
+
+      if (this.#status === "Rejected") {
         nextReject(this.#reason);
       }
 
-
-      if( this.#status === 'Pending' ){
-        this.#fulfilledCb.push( nextFulfilled );
-        this.#rejectedCb.push( nextReject );
+      if (this.#status === "Pending") {
+        this.#fulfilledQueue.push(nextFulfilled);
+        this.#rejectedQueue.push(nextReject);
       }
     };
-    
-    return new MyPromise( executor);
+
+    return new MyPromise(executor);
   }
 }
 
 const p1 = new MyPromise((resolve) => {
-  setTimeout(() => {
-    resolve("Success");
-  }, 1000);
-}).then(
-  (first) => {
-    console.log('first: ', first);
-    return new MyPromise((resolved) => {
-      setTimeout(() => {
-        resolved('then1');
-      }, 1000);
-    });
-  },
-).then((second) => {
-  console.log('second: ', second);
+  resolve("constructor");
+  // setTimeout(() => {
+  // }, 1000);
+});
+
+const p2 = p1.then((first) => {
+  console.log("first: ", first);
+  return new MyPromise((resolved) => {
+    setTimeout(() => {
+      resolved?.("then1");
+    }, 1000);
+  });
+});
+
+p2.then((second) => {
+  console.log("second: ", second);
+  return "then2";
+}).then((third) => {
+  console.log("third: ", third);
 });
 
 // const p2 = new MyPromise((resolve, reject) => {
