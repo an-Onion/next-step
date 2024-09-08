@@ -25,3 +25,6 @@ var smc = new sourcemap.SourceMapConsumer(fs.readFileSync('./test.js.map','utf8'
 var ret = smc.originalPositionFor({line:1,column:105});
 console.log(ret);
 ```
+
+
+[0]: https://github.com/abruzzi/system-design-interview-fe
