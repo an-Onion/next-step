@@ -1,6 +1,5 @@
 Function.prototype.MyBind = function (context, ...param) {
 
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const originalFunc = this;
   const fn = Symbol('fn');
   context[fn] = originalFunc;
